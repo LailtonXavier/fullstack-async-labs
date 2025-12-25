@@ -8,9 +8,10 @@
   COPY package.json pnpm-lock.yaml ./
   RUN pnpm install --frozen-lockfile
   
-  COPY . .
-  
+  COPY prisma ./prisma
   RUN pnpm prisma generate
+  
+  COPY . .
   RUN pnpm build
   
   # ---- production stage ----
