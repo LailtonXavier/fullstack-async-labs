@@ -1,0 +1,91 @@
+Student:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: ID do Estudante
+    name:
+      type: string
+    email:
+      type: string
+      format: email
+      example: admin@gmail.com
+    ra:
+      type: string
+      description: Registro Acadêmico
+    cpf:
+      type: string
+      description: CPF
+    active:
+      type: boolean
+    employeeId:
+      type: string
+      format: uuid
+      description: ID do funcionário/instrutor responsável (opcional)
+    createdAt:
+      type: string
+      format: date-time
+    updatedAt:
+      type: string
+      format: date-time
+
+CreateEmployeeDTO:
+  type: object
+  required:
+    - name
+    - email
+    - password
+  properties:
+    name:
+      type: string
+      minLength: 3
+      example: Maria Instructor
+    email:
+      type: string
+      format: email
+      example: maria@escola.com
+    password:
+      type: string
+      minLength: 6
+      description: Senha (mínimo 6 caracteres)
+      example: minhaSenha123
+    role:
+      type: string
+      enum:
+        - admin
+        - instructor
+      default: admin
+      description: Cargo do funcionário (opcional)
+
+EmployeeResponseDto:
+  type: object
+  description: DTO de resposta contendo informações detalhadas do funcionário.
+  properties:
+    id:
+      type: string
+      format: uuid
+    name:
+      type: string
+    email:
+      type: string
+      format: email
+    role:
+      type: string
+      enum:
+        - admin
+        - instructor
+      example: instructor
+    active:
+      type: boolean
+    createdAt:
+      type: string
+      format: date-time
+    updatedAt:
+      type: string
+      format: date-time
+    students:
+      type: array
+      items:
+        $ref: '#/components/schemas/Student'
+      description: Lista de estudantes associados a este funcionário/instrutor.

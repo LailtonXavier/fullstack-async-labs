@@ -1,0 +1,63 @@
+/api/employees:
+  post:
+    tags:
+      - Employee
+    summary: Cria um novo funcionário
+    description: Cadastro de um novo Employee no sistema. Retorna a entidade criada.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateEmployeeDTO'
+    responses:
+      201:
+        description: Funcionário criado com sucesso
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/EmployeeResponseDto'
+      400:
+        description: Requisição inválida ou Email já existe
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+/api/employees/{id}:
+  get:
+    tags:
+      - Employee
+    summary: Busca um funcionário pelo ID
+    description: Retorna os dados de um funcionário específico, incluindo a lista de estudantes associados.
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: ID do funcionário (UUID)
+    responses:
+      200:
+        description: OK. Funcionário encontrado.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/EmployeeResponseDto'
+      404:
+        description: Funcionário não encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      401:
+        description: Não autorizado (Token ausente ou inválido)

@@ -1,0 +1,92 @@
+CreateStudentDTO:
+  type: object
+  required:
+    - name
+    - email
+    - ra
+    - cpf
+    - employeeId
+  properties:
+    name:
+      type: string
+      format: name
+      minLength: 3
+    email:
+      type: string
+      format: email
+      example: admin@gmail.com
+    ra:
+      type: string
+      minLength: 1
+      description: Registro Acadêmico (RA)
+    cpf:
+      type: string
+      minLength: 1
+      description: Cadastro de Pessoa Física (CPF)
+    employeeId:
+      type: string
+      format: uuid
+      description: ID do funcionário/instrutor responsável pela matrícula
+
+UpdateStudentDTO:
+  type: object
+  description: Dados para atualização do estudante (campos opcionais).
+  properties:
+    name:
+      type: string
+      minLength: 3
+      example: Alice Nova Silva
+    email:
+      type: string
+      format: email
+      example: alice.nova.silva@aluno.com
+
+StudentResponseDto:
+  type: object
+  description: DTO de resposta do Estudante (entidade completa).
+  properties:
+    id:
+      type: string
+      format: uuid
+      example: 'stu-11223344'
+    name:
+      type: string
+    email:
+      type: string
+      format: email
+    ra:
+      type: string
+    cpf:
+      type: string
+    active:
+      type: boolean
+    employeeId:
+      type: string
+      format: uuid
+    createdAt:
+      type: string
+      format: date-time
+    updatedAt:
+      type: string
+      format: date-time
+
+PaginatedStudents:
+  type: object
+  description: Estrutura para retorno de lista de estudantes com paginação.
+  properties:
+    students:
+      type: array
+      items:
+        $ref: '#/components/schemas/StudentResponseDto'
+    total:
+      type: integer
+      description: Número total de estudantes associados ao Employee
+      example: 42
+    page:
+      type: integer
+      description: Página atual
+      example: 1
+    totalPages:
+      type: integer
+      description: Número total de páginas
+      example: 5

@@ -1,0 +1,8 @@
+import { z } from 'zod';
+
+export const LoginSchema = z.object({
+  email: z.string().email('E-mail inválido'),
+  password: z.string().min(6, 'Mínimo 6 caracteres'),
+});
+
+export type LoginSchemaDto = z.infer<typeof LoginSchema>;

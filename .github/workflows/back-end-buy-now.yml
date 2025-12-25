@@ -1,0 +1,31 @@
+name: Back-end-buy-now CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "apps/back-end-buy-now/**"
+  pull_request:
+    paths:
+      - "apps/back-end-buy-now/**"
+
+jobs:
+  back-end-buy-now:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: apps/back-end-buy-now
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm install -g pnpm
+      - run: pnpm install
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build

@@ -1,0 +1,75 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: node_api
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/buy-now_db?schema=public"
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_ACCESS_SECRET: "your-super-secret-access-key-change-this-in-production"
+      JWT_REFRESH_SECRET: "your-super-secret-refresh-key-change-this-in-production"
+      JWT_ACCESS_EXPIRES_IN: "15m"
+      JWT_REFRESH_EXPIRES_IN: "7d"
+      NODE_ENV: "production"
+      PORT: 3000
+    command: sh ./entrypoint.sh
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - buy-now-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis-queue
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - buy-now-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: buy-now_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - buy-now-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
+  redis_data:
+
+networks:
+  buy-now-network:
+    driver: bridge

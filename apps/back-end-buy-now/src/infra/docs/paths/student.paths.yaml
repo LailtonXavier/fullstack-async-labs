@@ -1,0 +1,186 @@
+/api/students:
+  post:
+    tags:
+      - Student
+    summary: Cadastra um novo estudante
+    description: Cria um novo registro de estudante associado a um Employee/Instrutor.
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateStudentDTO'
+    responses:
+      '201':
+        description: Estudante criado com sucesso
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/StudentResponseDto'
+      '404':
+        description: Employee (Instrutor) não encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '400':
+        description: Validação falhou (Email, RA ou CPF já existem)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+/api/students/{id}:
+  put:
+    tags:
+      - Student
+    summary: Atualiza dados de um estudante
+    description: Atualiza o nome e/ou e-mail de um estudante existente pelo ID.
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: ID do estudante
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateStudentDTO'
+    responses:
+      '200':
+        description: Estudante atualizado com sucesso
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/StudentResponseDto'
+      '404':
+        description: Estudante não encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '400':
+        description: Email já existe ou dados de entrada inválidos
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+  delete:
+    tags:
+      - Student
+    summary: Remove um estudante
+    description: Remove um estudante do sistema permanentemente.
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: ID do estudante
+    responses:
+      '204':
+        description: Estudante removido com sucesso (No Content)
+      '404':
+        description: Estudante não encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+/api/students/employee/{employeeId}:
+  get:
+    tags:
+      - Student
+    summary: Lista estudantes por Employee/Instrutor
+    description: Retorna uma lista paginada de estudantes associados a um Employee.
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: employeeId
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: ID do Employee (Instrutor) responsável
+      - in: query
+        name: page
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        required: false
+        description: Número da página a ser retornada
+    responses:
+      '200':
+        description: Lista de estudantes retornada com sucesso
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaginatedStudents'
+      '404':
+        description: Employee (Instrutor) não encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '400':
+        description: ID do Employee inválido
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+  
+/api/students/search:
+  get:
+    tags:
+      - Student
+    summary: Pesquisa estudantes por nome, RA ou CPF
+    description: Retorna uma lista paginada de estudantes filtrada pelo nome, RA ou CPF. A busca é case-insensitive.
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: query
+        schema:
+          type: string
+        required: true
+        description: Termo de pesquisa (nome, RA ou CPF)
+      - in: query
+        name: page
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        required: false
+        description: Número da página a ser retornada
+    responses:
+      '200':
+        description: Lista de estudantes retornada com sucesso
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaginatedStudents'
+      '400':
+        description: Parâmetro de busca inválido (query vazia)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
