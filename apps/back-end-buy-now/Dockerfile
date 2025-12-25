@@ -10,11 +10,12 @@
   
   COPY . .
   
-  # Prisma
-  COPY apps/back-end-buy-now/src/infra/database/prisma ./prisma
+  # ✅ Prisma (CAMINHO CORRETO)
+  COPY src/infra/database/prisma ./prisma
   RUN pnpm prisma generate --schema=./prisma/schema.prisma
   
   RUN pnpm build
+  
   
   # ---- production stage ----
   FROM node:20-alpine
