@@ -9,15 +9,15 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/buy-now_db?schema=public"
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
+      DATABASE_URL: ${DATABASE_URL}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      JWT_ACCESS_SECRET: "your-super-secret-access-key-change-this-in-production"
       JWT_REFRESH_SECRET: "your-super-secret-refresh-key-change-this-in-production"
-      JWT_ACCESS_EXPIRES_IN: "15m"
-      JWT_REFRESH_EXPIRES_IN: "7d"
+      JWT_ACCESS_EXPIRES_IN: ${JWT_ACCESS_EXPIRES_IN}
+      JWT_REFRESH_EXPIRES_IN: ${JWT_REFRESH_EXPIRES_IN}
       NODE_ENV: "production"
       PORT: 3000
     command: sh ./entrypoint.sh

@@ -2,15 +2,12 @@ name: Back-end-buy-now CI/CD
 
 on:
   push:
-    branches: [ "main" ]
-    paths:
-      - "apps/back-end-buy-now/**"
-  pull_request:
+    branches: ["main"]
     paths:
       - "apps/back-end-buy-now/**"
 
 jobs:
-  back-end-buy-now:
+  api:
     runs-on: ubuntu-latest
 
     defaults:
@@ -24,8 +21,42 @@ jobs:
         with:
           node-version: 20
 
-      - run: npm install -g pnpm
-      - run: pnpm install
-      - run: pnpm lint
-      - run: pnpm test
-      - run: pnpm build
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install deps
+        run: pnpm install
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Docker login
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Build image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/back-end-buy-now:latest .
+
+      - name: Push image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/back-end-buy-now:latest
+
+      - name: Deploy EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/back-end-buy-now:latest
+            docker stop api || true
+            docker rm api || true
+            docker run -d \
+              --name api \
+              -p 3000:3000 \
+              --env-file /home/ec2-user/.env.api \
+              ${{ secrets.DOCKERHUB_USERNAME }}/back-end-buy-now:latest

@@ -11,6 +11,6 @@ echo "Postgres pronto! Aplicando migrations..."
 pnpm prisma:migrate
 
 echo "Iniciando aplicação..."
-pnpm start:dev
+# pnpm start:dev
 
-# CMD ["node", "dist/main.js"] - prod
+node dist/main.js
