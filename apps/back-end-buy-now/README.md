@@ -1,10 +1,10 @@
-# 📚 Buy Now - Back-End & Front-End & Mobile
+# 📚 Buy Now - Back-End & Front-End & Mobile ...
 
 ---
 
 ## 📌 Sumário
 
-- [📚 Buy Now - Back-End \& Front-End \& Mobile](#-buy-now---back-end--front-end--mobile)
+- [📚 Buy Now - Back-End \& Front-End \& Mobile ...](#-buy-now---back-end--front-end--mobile-)
   - [📌 Sumário](#-sumário)
   - [🧾 Sobre](#-sobre)
   - [🧰 Stack Tecnológica](#-stack-tecnológica)

@@ -10,8 +10,12 @@
   
   COPY . .
   
-  RUN pnpm prisma generate
+  # ✅ Prisma (CAMINHO CORRETO)
+  COPY src/infra/database/prisma ./prisma
+  RUN pnpm prisma generate --schema=./prisma/schema.prisma
+  
   RUN pnpm build
+  
   
   # ---- production stage ----
   FROM node:20-alpine

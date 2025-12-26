@@ -8,9 +8,7 @@ until pg_isready -h "$POSTGRES_HOST" -p "$POSTGRES_PORT"; do
 done
 
 echo "Postgres pronto! Aplicando migrations..."
-pnpm prisma:migrate
-
-echo "Iniciando aplicação..."
+npx prisma migrate deploy --schema=./prisma/schema.prisma
 # pnpm start:dev
 
 node dist/main.js
