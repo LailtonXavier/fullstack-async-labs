@@ -8,7 +8,8 @@ Este documento detalha o ecossistema completo composto por **API (Backend)**, **
 Em todas as frentes (Backend, Frontend e Mobile), o projeto segue a **Clean Architecture**.
 * **Escalabilidade:** Estrutura modular que permite o crescimento sustentável da base de código.
 
-
+## Demo
+### [Web - Buy.Now](https://fullstack-async-labs.vercel.app/)
 
 ---
 
