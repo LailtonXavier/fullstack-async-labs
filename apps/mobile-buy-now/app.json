@@ -7,6 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "mobilebuynow",
     "userInterfaceStyle": "automatic",
+    "platforms": ["android", "ios"],
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
