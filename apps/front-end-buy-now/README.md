@@ -1,25 +1,18 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### Front end + SocketIO
 
-## Getting Started
-
-First, run the development server:
+Crie um arquivo chamado `.env` na raiz do projeto com as variáveis abaixo (exemplo):
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+env
+# Configurações
+NEXT_PUBLIC_API_URL=http://localhost:3000
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=projectkeys
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dyqtffz8q
+OPENAI_API_KEY=key
 ```
 
-Modal (React)
-  ↓
-API Route (/api/ai/generate-description)
-  ↓
-OpenAI
-  ↓
-Texto em português
-  ↓
-Preenche o textarea automaticamente
+```bash
+ppm install
+# or
+pnpm dev
+```
