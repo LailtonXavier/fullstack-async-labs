@@ -20,9 +20,14 @@ export const useProductWebSocket = (
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    const socket = io('http://localhost:3000/products', {
-      query: { userId },
-    });
+    const socket = io(
+      `${process.env.NEXT_PUBLIC_API_URL}/products`,
+      {
+        query: { userId },
+        transports: ['websocket'],
+        secure: true,
+      }
+    );  
 
     socketRef.current = socket;
 
