@@ -10,6 +10,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import ProductCardSearch from './components/ProductCardSearch';
 
+type StatusValue = "ACTIVE" | "INACTIVE" | "ARCHIVED" | undefined;
+
 export const categories = [
   { label: 'Todos', value: undefined },
   { label: 'Em destaque', value: 'Featured' },
@@ -22,13 +24,12 @@ export const categories = [
   { label: 'Almofadas', value: 'Cushions' },
 ];
 
-export const statuses = [
+export const statuses: { label: string; value: StatusValue }[] = [
   { label: 'Todos', value: undefined },
   { label: 'Ativo', value: 'ACTIVE' },
   { label: 'Inativo', value: 'INACTIVE' },
   { label: 'Arquivado', value: 'ARCHIVED' },
 ];
-
 export default function SearchPage() {
   const {
     category,
