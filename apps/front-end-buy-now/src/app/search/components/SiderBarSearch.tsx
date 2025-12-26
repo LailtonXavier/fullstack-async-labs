@@ -1,22 +1,18 @@
 import { SetStateAction } from 'react';
 
+type StatusValue = "ACTIVE" | "INACTIVE" | "ARCHIVED" | undefined;
+
 interface SiderBarSearchProps {
   handleResetFilters: () => void
   setCategory: (category?: string) => void
   categories: ({
     label: string;
-    value: undefined;
-  } | {
-      label: string;
-      value: string;
+    value: string | undefined;
   })[]
-  setStatus: (status?: "ACTIVE" | "INACTIVE" | "ARCHIVED") => void
+  setStatus: (status: StatusValue) => void 
   statuses: ({
     label: string;
-    value: undefined;
-  } | {
-      label: string;
-      value: string;
+    value: StatusValue;
   })[]
   setLocalPrice: (value: SetStateAction<string>) => void
   handleApplyPrice: () => void
@@ -25,7 +21,18 @@ interface SiderBarSearchProps {
   localPrice: string
 }
 
-const SiderBarSearch = ({categories, handleApplyPrice, handleResetFilters, setCategory, setLocalPrice, setStatus, statuses, category, localPrice, status}: SiderBarSearchProps) => {
+const SiderBarSearch = ({
+  categories, 
+  handleApplyPrice, 
+  handleResetFilters, 
+  setCategory, 
+  setLocalPrice, 
+  setStatus, 
+  statuses, 
+  category, 
+  localPrice, 
+  status
+}: SiderBarSearchProps) => {
 
   return (
     <aside>
