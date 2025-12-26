@@ -4,14 +4,12 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
-    "build:android": "expo prebuild --platform android && cd android && ./gradlew assembleDebug",
-    "eas:build": "eas build --platform android --profile preview",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint",
-    "prebuild": "expo prebuild"
+    "build:android": "expo prebuild --platform android",
+    "doctor": "expo doctor",
+    "eas:build": "eas build --platform android --profile preview"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
