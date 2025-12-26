@@ -53,12 +53,9 @@ export function ProductSuccessModal({ isOpen, product, onClose }: ProductSuccess
         `}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Glow Effect */}
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-green-500/20 blur-2xl rounded-3xl" />
         
-        {/* Modal Content */}
         <div className="relative bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-800 rounded-2xl overflow-hidden border border-emerald-500/20">
-          {/* Close Button */}
           <button
             onClick={handleClose}
             className="absolute top-4 right-4 z-10 p-2 rounded-full bg-zinc-800/50 hover:bg-zinc-700/50 transition-colors"
@@ -66,9 +63,7 @@ export function ProductSuccessModal({ isOpen, product, onClose }: ProductSuccess
             <X className="w-4 h-4 text-zinc-400" />
           </button>
 
-          {/* Header with Animation */}
           <div className="relative px-6 pt-8 pb-6 text-center overflow-hidden">
-            {/* Sparkles Background */}
             <div className="absolute inset-0 overflow-hidden">
               {[...Array(20)].map((_, i) => (
                 <Sparkles
@@ -88,7 +83,6 @@ export function ProductSuccessModal({ isOpen, product, onClose }: ProductSuccess
               ))}
             </div>
 
-            {/* Success Icon */}
             <div className="relative inline-flex mb-4">
               <div className="absolute inset-0 bg-emerald-500/30 rounded-full blur-xl animate-pulse" />
               <div className="relative bg-gradient-to-br from-emerald-500 to-green-600 rounded-full p-3">
@@ -96,7 +90,6 @@ export function ProductSuccessModal({ isOpen, product, onClose }: ProductSuccess
               </div>
             </div>
 
-            {/* Title */}
             <h2 className="relative text-2xl font-bold text-white mb-2">
               🎉 Parabéns!
             </h2>
@@ -105,9 +98,7 @@ export function ProductSuccessModal({ isOpen, product, onClose }: ProductSuccess
             </p>
           </div>
 
-          {/* Product Info */}
           <div className="px-6 pb-6 space-y-4">
-            {/* Product Image */}
             {product.photo && (
               <div className="relative w-full h-40 rounded-xl overflow-hidden bg-zinc-800/50 border border-zinc-700/50">
                 <img
@@ -118,7 +109,6 @@ export function ProductSuccessModal({ isOpen, product, onClose }: ProductSuccess
               </div>
             )}
 
-            {/* Product Details Card */}
             <div className="bg-zinc-800/50 backdrop-blur-sm rounded-xl p-4 border border-zinc-700/50 space-y-3">
               <div className="flex items-start gap-3">
                 <div className="p-2 bg-emerald-500/10 rounded-lg">
@@ -134,7 +124,6 @@ export function ProductSuccessModal({ isOpen, product, onClose }: ProductSuccess
                 </div>
               </div>
 
-              {/* Additional Info */}
               <div className="grid grid-cols-2 gap-3 pt-2 border-t border-zinc-700/50">
                 {product.price && (
                   <div>
@@ -155,7 +144,6 @@ export function ProductSuccessModal({ isOpen, product, onClose }: ProductSuccess
               </div>
             </div>
 
-            {/* Status Badge */}
             <div className="flex items-center justify-center gap-2 py-3 px-4 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
               <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
               <span className="text-emerald-400 text-sm font-medium">
@@ -163,7 +151,6 @@ export function ProductSuccessModal({ isOpen, product, onClose }: ProductSuccess
               </span>
             </div>
 
-            {/* Action Button */}
             <button
               onClick={handleDetailsClick}
               className="
