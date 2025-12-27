@@ -35,7 +35,7 @@ const SiderBarSearch = ({
 }: SiderBarSearchProps) => {
 
   return (
-    <aside>
+    <aside className='hidden md:block'>
       <div className="mt-20 mb-6 flex items-center justify-between border-b-2 border-gray-400">
         <h2 className="text-lg font-medium">Filter</h2>
         <button

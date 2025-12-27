@@ -30,6 +30,7 @@ export const statuses: { label: string; value: StatusValue }[] = [
   { label: 'Inativo', value: 'INACTIVE' },
   { label: 'Arquivado', value: 'ARCHIVED' },
 ];
+
 export default function SearchPage() {
   const {
     category,
@@ -65,7 +66,7 @@ export default function SearchPage() {
           exit={{ x: -20, opacity: 0 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <div className="w-full grid grid-cols-[260px_1fr] gap-12 mb-10 mt-20 px-8">
+          <div className="w-full grid md:grid-cols-[260px_1fr] grid-cols-1 gap-12 mb-10 mt-20 px-8">
             <SiderBarSearch
               categories={categories}
               category={category}

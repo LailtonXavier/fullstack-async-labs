@@ -26,116 +26,30 @@ export default function ProductDetail() {
 
   const handleWishClick = () => {
     if (isWishSent) return;
-    
     setIsWishSent(true);
-    
     toast.success('Enviamos seu desejo para central!', {
       duration: 4000,
       position: 'top-center',
       icon: '🎯',
-      style: {
-        background: '#10b981',
-        color: '#fff',
-        fontWeight: 500,
-        borderRadius: '12px',
-        padding: '16px',
-      },
-      iconTheme: {
-        primary: '#fff',
-        secondary: '#10b981',
-      },
+      style: { background: '#10b981', color: '#fff', fontWeight: 500, borderRadius: '12px', padding: '16px' },
     });
-    
-    setTimeout(() => {
-      setIsWishSent(false);
-    }, 5000);
+    setTimeout(() => setIsWishSent(false), 5000);
   };
 
-  if (!productSelected) {
-    return <Loading />;
-  }
+  if (!productSelected) return <Loading />;
 
   const imageUrl = productSelected.photo || DefaultImage.src;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Header />
       <Toaster />
       
-      <div className="mx-auto pb-20">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          <div className="flex flex-col mt-22 w-xl px-6 py-6">
-            <div className="my-10">
-              <nav className="flex justify-start gap-2 text-sm text-zinc-600 dark:text-zinc-400">
-                <Link href="/" className="hover:text-zinc-900 dark:hover:text-zinc-100">
-                  Home
-                </Link>
-                <span>›</span>
-                <span className="text-zinc-900 dark:text-zinc-100">{productSelected.name}</span>
-              </nav>
-            </div>
-
-            <div className="mb-8">
-              <h1 className="mb-4 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-                {productSelected.name}
-              </h1>
-              <span className="flex items-center gap-1.5 text-sm text-zinc-500">
-                ID: {String(productSelected.id).slice(0, 8)}...
-              </span>
-            </div>
-
-            <div className="mb-8">
-              <p className="text-4xl font-bold text-zinc-900 dark:text-zinc-100">
-                R$ {productSelected.price}
-              </p>
-            </div>
-
-            <button
-              onClick={handleWishClick}
-              disabled={isWishSent}
-              className={`mb-12 flex w-full items-center justify-center gap-3 rounded-xl px-6 py-4 text-base font-medium transition-all duration-300 cursor-pointer ${
-                isWishSent
-                  ? 'bg-emerald-600 text-white dark:bg-emerald-700'
-                  : 'bg-black text-white hover:opacity-90 dark:bg-white dark:text-black dark:hover:bg-zinc-200'
-              }`}
-            >
-              <span>
-                {isWishSent ? 'Desejo enviado!' : 'Quero este produto agora!'}
-              </span>
-              
-              <span className={`flex h-8 w-8 items-center justify-center rounded-full transition-all duration-300 ${
-                isWishSent
-                  ? 'bg-white text-emerald-600 dark:bg-emerald-800 dark:text-white'
-                  : 'bg-white text-black dark:bg-black dark:text-white'
-              }`}>
-                {isWishSent ? (
-                  <Check size={18} className="animate-pulse" />
-                ) : (
-                  <ShoppingCart size={18} />
-                )}
-              </span>
-            </button>
-
-            <div className="space-y-8 border-t border-zinc-200 pt-8 dark:border-zinc-800">
-              <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-                {productSelected.description || 'Produto exclusivo com design refinado e qualidade excepcional.'}
-              </p>
-
-              {productSelected.category && (
-                <div className="space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
-                  <p>
-                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">
-                      Categoria:
-                    </span>{' '}
-                    {productSelected.category}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-900">
+      <main className="flex-grow mx-auto w-full px-4 sm:px-6 lg:px-8 pt-24 pb-20">
+        
+        <div className="flex flex-col lg:flex-row-reverse gap-8 lg:gap-12">
+          <div className="w-full lg:w-1/2">
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-900 shadow-sm">
               {!imageLoaded && (
                 <div className="absolute inset-0 animate-pulse bg-zinc-200 dark:bg-zinc-800" />
               )}
@@ -144,17 +58,80 @@ export default function ProductDetail() {
                 alt={productSelected.name}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className={`object-cover transition-opacity duration-300 ${
+                className={`object-cover transition-opacity duration-500 ${
                   imageLoaded ? 'opacity-100' : 'opacity-0'
                 }`}
                 onLoadingComplete={() => setImageLoaded(true)}
                 priority
-                quality={90}
               />
             </div>
           </div>
+
+          <div className="w-full lg:w-1/2 flex flex-col">
+            <nav className="mb-6 flex gap-2 text-sm text-zinc-500">
+              <Link href="/" className="hover:text-zinc-900 dark:hover:text-zinc-100 transition">
+                Home
+              </Link>
+              <span>›</span>
+              <span className="truncate text-zinc-900 dark:text-zinc-100 font-medium">
+                {productSelected.name}
+              </span>
+            </nav>
+
+            <div className="mb-6">
+              <h1 className="mb-2 text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+                {productSelected.name}
+              </h1>
+              <p className="text-xs text-zinc-400 font-mono">
+                ID: {String(productSelected.id).slice(0, 12)}
+              </p>
+            </div>
+
+            <div className="mb-8">
+              <p className="text-4xl md:text-5xl font-black text-zinc-900 dark:text-zinc-100">
+                R$ {productSelected.price}
+              </p>
+            </div>
+
+            <button
+              onClick={handleWishClick}
+              disabled={isWishSent}
+              className={`mb-10 flex w-full items-center justify-between rounded-2xl px-6 py-5 text-lg font-bold transition-all active:scale-[0.98] ${
+                isWishSent
+                  ? 'bg-emerald-600 text-white'
+                  : 'bg-black text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200'
+              }`}
+            >
+              <span>
+                {isWishSent ? 'Desejo enviado!' : 'Quero este produto agora!'}
+              </span>
+              
+              <div className={`flex h-10 w-10 items-center justify-center rounded-full ${
+                isWishSent ? 'bg-white/20' : 'bg-white/10'
+              }`}>
+                {isWishSent ? <Check size={22} /> : <ShoppingCart size={22} />}
+              </div>
+            </button>
+
+            <div className="space-y-6 border-t border-zinc-200 pt-8 dark:border-zinc-800">
+              <div>
+                <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400 mb-3">Descrição</h3>
+                <p className="text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
+                  {productSelected.description || 'Produto exclusivo com design refinado e qualidade excepcional.'}
+                </p>
+              </div>
+
+              {productSelected.category && (
+                <div className="inline-flex items-center rounded-full bg-zinc-100 px-4 py-1.5 dark:bg-zinc-800">
+                  <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase mr-2">Categoria:</span>
+                  <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">{productSelected.category}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
         </div>
-      </div>
+      </main>
       <Footer />
     </div>
   );
