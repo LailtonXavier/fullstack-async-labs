@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import { tokenStore } from '@/core/infra/store/tokenStore';
 import { useProductWebSocket } from '@/hooks/socket/useProductWebSocket';
 import { ProductProps } from '@/core/domain/entities/product';
+import { Menu, Plus, X } from 'lucide-react';
 
 interface JobProgress {
   jobId: string;
@@ -20,6 +21,7 @@ interface JobProgress {
 
 export default function Header() {
   const [openModal, setOpenModal] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { setCategory } = useProductFiltersStore();
   const router = useRouter();
   const pathname = usePathname();
@@ -31,6 +33,23 @@ export default function Header() {
 
   const accessToken = tokenStore.getAuthData();
   const userId = accessToken?.userId; 
+
+  const categories = [
+    { label: 'Em destaque', slug: 'Featured' },
+    { label: 'Cadeiras', slug: 'Chairs' },
+    { label: 'Poltronas', slug: 'Armchairs' },
+    { label: 'Abajur', slug: 'TableLamp' },
+    { label: 'Luminária de teto', slug: 'CeilingLight' },
+    { label: 'Decorações', slug: 'Decors' },
+    { label: 'Tapetes', slug: 'Rugs' },
+    { label: 'Almofadas', slug: 'Cushions' },
+  ];
+
+  const handleCategoryClick = (slug?: string) => {
+    setCategory(slug);
+    router.push('/search');
+    setIsMobileMenuOpen(false);
+  };
 
   const handleProductCreated = useCallback((product: ProductProps) => {
     setIsCreating(false);
@@ -65,82 +84,86 @@ export default function Header() {
     onError: handleError,
   });
 
-  const handleCategoryClick = () => {
-    setCategory(undefined);
-    router.push('/search');
-  };
-
-  const handleProfileClick = () => {
-    router.push('/profile');
-  };
-
   const isHomeActive = pathname === '/';
-  const isSearchActive = pathname === '/search';
 
   return (
     <>
-      <header className="position fixed top-1 flex items-center justify-between px-6 py-6 w-full z-10">
-        <h1 className="text-5xl font-extrabold tracking-tight relative">
-          BUY.NOW<span className="ml-2 align-super text-5xl absolute top-0">©</span>
+     <header className="fixed top-0 flex items-center justify-between px-4 md:px-6 py-4 md:py-6 w-full z-50 bg-transparent">
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight relative z-50">
+          BUY.NOW<span className="ml-1 align-super text-xs md:text-5xl md:absolute md:top-0">©</span>
         </h1>
 
-        <nav className="relative overflow-hidden rounded-xl bg-white/10 p-2 shadow-xl backdrop-blur-md backdrop-saturate-150 hidden items-center gap-8 md:flex">
-          <Link 
-            href='/' 
-            className={`text-sm font-medium transition ${
-              isHomeActive 
-                ? 'opacity-100 font-bold' 
-                : 'opacity-60 hover:opacity-100'
-            }`}
-          >
+        <nav className="hidden md:flex relative overflow-hidden rounded-xl bg-white/10 p-2 shadow-xl backdrop-blur-md backdrop-saturate-150 items-center gap-8">
+          <Link href='/' className={`text-sm font-medium transition ${isHomeActive ? 'opacity-100 font-bold' : 'opacity-60 hover:opacity-100'}`}>
             Home
           </Link>
-          
-          <button
-            type='button'
-            onClick={handleCategoryClick}
-            className={`text-sm font-medium transition ${
-              isSearchActive 
-                ? 'opacity-100 font-bold' 
-                : 'opacity-60 hover:opacity-100'
-            }`}
-          >
+          <button onClick={() => handleCategoryClick()} className="text-sm font-medium opacity-60 hover:opacity-100 transition">
             Ver Tudo
           </button>
-
           <button
-            className="flex items-center rounded-lg bg-black px-4 py-2 text-sm text-white dark:bg-white dark:text-black cursor-pointer relative"
-            type='button'
+            className="flex items-center rounded-lg bg-black px-4 py-2 text-sm text-white dark:bg-white dark:text-black"
             onClick={() => setOpenModal(true)}
             disabled={isCreating}
           >
             {isCreating ? 'Criando...' : 'Novo Produto'}
-            <span className="flex h-6 w-6 ml-4 items-center justify-center rounded-full bg-white text-black dark:bg-black dark:text-white">
-              {isCreating ? (
-                <span className="animate-spin">⏳</span>
-              ) : (
-                '+'
-              )}
+            <span className="ml-2 bg-white text-black rounded-full w-5 h-5 flex items-center justify-center font-bold">
+              {isCreating ? '...' : '+'}
             </span>
-            
-            {isCreating && (
-              <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-              </span>
-            )}
           </button>
         </nav>
 
-        <div className='flex gap-2'>
+        <div className='flex items-center gap-2 relative z-50'>
           <button
-            type='button'
-            onClick={handleProfileClick}
-            className="cursor-pointer rounded-lg bg-black px-4 py-2 text-sm text-white dark:bg-white dark:text-black"
+            onClick={() => router.push('/profile')}
+            className="hidden sm:block rounded-lg bg-black px-4 py-2 text-sm text-white dark:bg-white dark:text-black"
           >
             Perfil
           </button>
-          <LogoutButton />
+          <div className="hidden sm:block">
+            <LogoutButton />
+          </div>
+
+          <button 
+            className="p-2 md:hidden bg-black/80 text-white rounded-lg backdrop-blur-md"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+
+        <div className={`fixed inset-0 bg-black z-40 transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'} md:hidden`}>
+          <div className="flex flex-col h-full p-8 pt-24 text-white">
+            <p className="text-sm italic opacity-70 mb-8 border-l-2 border-white/20 pl-4">
+              Refinadas. Minimalistas. Inesquecíveis.
+            </p>
+
+            <nav className="flex flex-col gap-6 text-2xl font-light">
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+              <button onClick={() => setOpenModal(true)} className="flex items-center gap-2 text-white cursor-pointer">
+                Novo Produto <Plus size={20} />
+              </button>
+              <hr className="opacity-10" />
+              <h4 className="text-xs uppercase tracking-widest opacity-50 font-bold">Categorias</h4>
+              <div className="grid grid-cols-1 gap-4 overflow-y-auto max-h-[40vh]">
+                {categories.map((cat) => (
+                  <button 
+                    key={cat.slug} 
+                    onClick={() => handleCategoryClick(cat.slug)}
+                    className="text-left text-lg opacity-80 hover:opacity-100"
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+            </nav>
+
+            <div className="mt-auto flex flex-col gap-4">
+               <button onClick={() => {router.push('/profile'); setIsMobileMenuOpen(false)}} className="w-full py-4 bg-white text-black font-bold rounded-xl text-center">Meu Perfil</button>
+               <div className='flex gap-2 items-center'>
+                  Sair <LogoutButton />
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 
