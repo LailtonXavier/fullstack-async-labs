@@ -26,17 +26,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 12,
+    paddingVertical: 14,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#1e293b',
+    marginBottom: 4,
   },
+
   backButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#020617',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+
   text: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: '600',
     color: '#e5e7eb',
+    letterSpacing: 0.3,
   },
+
   highlight: {
     color: '#38bdf8',
     fontWeight: '700',
   },
 });
+

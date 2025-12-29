@@ -1,20 +1,35 @@
 import { ProductProps } from '@/app/core/domain/entities/product';
+import { useProductFiltersStore } from '@/app/core/store/useProductFiltersStore';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface Props {
   product: ProductProps;
-  onPress?: () => void;
+  previewRouter: 'profile' | 'home'
 }
 
-export function ProductCard({ product, onPress }: Props) {
+export function ProductCard({ product, previewRouter }: Props) {
+    const router = useRouter();
+    const {setProductSelected  } = useProductFiltersStore();
+
+    const handleGoDetails = () => {
+      setProductSelected(product);
+    
+      router.push({
+        pathname: '/(tabs)/details',
+        params: {
+          from: previewRouter,
+        },
+      });
+    };  
+  
   return (
     <TouchableOpacity
       activeOpacity={0.9}
       style={styles.container}
-      onPress={onPress}
+      onPress={handleGoDetails} 
     >
-      {/* Imagem */}
       <Image
         source={{
           uri:
@@ -24,7 +39,6 @@ export function ProductCard({ product, onPress }: Props) {
         style={styles.image}
       />
 
-      {/* Card flutuante */}
       <View style={styles.infoCard}>
         <View style={styles.textWrapper}>
           <Text style={styles.name} numberOfLines={1}>

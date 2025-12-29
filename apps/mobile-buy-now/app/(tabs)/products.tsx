@@ -3,7 +3,7 @@ import Loading from '@/components/loanding';
 import EmptyState from '@/components/product/empty-state';
 import FiltersModal from '@/components/product/filters-modal';
 import MenuModal from '@/components/product/menu-modal';
-import { ProductCard } from '@/components/product/product-card-profile';
+import { ProductCard } from '@/components/product/product-card';
 import ProductHeader from '@/components/product/product-header';
 import ProductNotFound from '@/components/product/product-not-found';
 import React, { useEffect, useState } from 'react';
@@ -52,15 +52,6 @@ export default function ProductsScreen() {
     resetFilters();
   }, []);
 
-  const handleApplyPrice = () => {
-    setPrice(localPrice || undefined);
-  };
-
-  const handleResetFilters = () => {
-    setLocalPrice('');
-    resetFilters();
-  };
-
   const onRefresh = async () => {
     setRefreshing(true);
     await refetch();
@@ -102,24 +93,23 @@ export default function ProductsScreen() {
         showMenu={showMenu}
         key='menu'
       />
-      <FiltersModal 
+
+      <FiltersModal
         categories={categories}
         category={category}
-        handleApplyPrice={handleApplyPrice}
-        handleResetFilters={handleResetFilters}
-        localPrice={localPrice}
-        setCategory={setCategory}
-        setLocalPrice={setLocalPrice}
-        setShowFilters={setShowFilters}
-        setStatus={setStatus}
-        showFilters={showFilters}
         status={status}
-        key='filters'
+        price={price}
+        setCategory={setCategory}
+        setStatus={setStatus}
+        setPrice={setPrice}        
+        resetFilters={resetFilters}
+        showFilters={showFilters}
+        setShowFilters={setShowFilters}
       />
 
       <FlatList
         data={data?.products || []}
-        renderItem={({ item }) => <ProductCard product={item} />}
+        renderItem={({ item }) => <ProductCard product={item} previewRouter='home' />}
         keyExtractor={(item) => String(item.id)}
         numColumns={1}
         contentContainerStyle={styles.productsList}
@@ -131,7 +121,7 @@ export default function ProductsScreen() {
             colors={['#000']}
           />
         }
-        ListEmptyComponent={EmptyState}
+        ListEmptyComponent={() => <EmptyState handleResetFilters={resetFilters} />}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.1}
         ListFooterComponent={

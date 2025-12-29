@@ -14,7 +14,7 @@ export default function FeaturedProductCard({ product }: Props) {
   const {setProductSelected} = useProductFiltersStore()
   const router = useRouter();
 
-  const imageUrl = product.photo || 'https://cdn.shopify.com/s/files/1/0768/2998/2971/files/Verde_armchair_1_11189552-9191-4249-b93e-c4b42704c4be.png?v=1753394061';
+  const imageUrl = product.photo || DefaultImage.src;
 
   const handleDetailsClick = () => {
     setProductSelected(product);
@@ -43,7 +43,7 @@ export default function FeaturedProductCard({ product }: Props) {
         />
       </div>
 
-      <div className="absolute min-w-90 bottom-6 right-6 max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-zinc-900">
+      <div className="absolute w-full md:min-w-90 bottom-6 right-2 md:right-6 max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-zinc-900">
         <span className="mb-3 inline-block rounded-full bg-black px-3 py-1 text-xs font-medium text-white dark:bg-white dark:text-black">
           Melhor venda
         </span>

@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import {
   Image,
@@ -13,15 +13,20 @@ import {
 import { useProductFiltersStore } from '../core/store/useProductFiltersStore';
 
 export default function DetailsScreen() {
-  const router = useRouter();
+  const { from } = useLocalSearchParams<{ from?: string }>();
+
   const { productSelected: product } = useProductFiltersStore();
   const [modalVisible, setModalVisible] = useState(false);
 
   if (!product) return null;
 
   const handleBack = () => {
-    router.replace('/(tabs)/products');
-  }
+    if (from === 'profile') {
+      router.replace('/(tabs)/profile');
+    } else {
+      router.replace('/(tabs)/products') 
+    }
+  };
 
   return (
     <View style={styles.container}>

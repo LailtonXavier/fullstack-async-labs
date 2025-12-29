@@ -6,7 +6,7 @@ import 'react-native-reanimated';
 
 import { AuthGuard } from '@/components/auth/AuthGuard';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { ToastProvider } from './providers/ToastProvider';
+import ToastProvider from './providers/ToastProvider';
 
 
 const queryClient = new QueryClient();

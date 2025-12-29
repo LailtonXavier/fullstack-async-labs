@@ -14,26 +14,37 @@ export function RenderMessage({ item }: { item: Message }) {
 
 const styles = StyleSheet.create({
   message: {
-    maxWidth: '80%',
-    padding: 12,
-    borderRadius: 12,
-    marginVertical: 4,
+    maxWidth: '78%',
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 16,
+    marginVertical: 6,
   },
+
   user: {
     alignSelf: 'flex-end',
     backgroundColor: '#2563eb',
+    borderBottomRightRadius: 4,
   },
+
   bot: {
     alignSelf: 'flex-start',
-    backgroundColor: '#e5e7eb',
+    backgroundColor: '#020617',
+    borderWidth: 1,
+    borderColor: '#1e293b',
+    borderBottomLeftRadius: 4,
   },
+
   text: {
     fontSize: 14,
-    color: '#020617',
+    lineHeight: 20,
+    color: '#f8fafc',
   },
+
   time: {
     fontSize: 10,
-    marginTop: 4,
-    opacity: 0.6,
+    marginTop: 6,
+    color: '#94a3b8',
+    alignSelf: 'flex-end',
   },
 });

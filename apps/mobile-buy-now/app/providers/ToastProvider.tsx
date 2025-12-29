@@ -5,7 +5,7 @@ interface ToastProviderProps {
   children: ReactNode;
 }
 
-export function ToastProvider({ children }: ToastProviderProps) {
+export default function ToastProvider({ children }: ToastProviderProps) {
   const toastConfig: ToastConfig = {
     success: (props) => (
       <BaseToast

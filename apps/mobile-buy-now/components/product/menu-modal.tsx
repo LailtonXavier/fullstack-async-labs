@@ -53,7 +53,6 @@ const MenuModal = ({categories,setCategory,setShowMenu,showMenu}:MenuModalProps)
           <Text style={styles.menuSectionTitle}>Navigation</Text>
           <TouchableOpacity style={styles.menuItem} onPress={() => {
             setShowMenu(false);
-            // router.push('/(tabs)');
           }}>
             <Ionicons name="home-outline" size={24} color="#000" />
             <Text style={styles.menuItemText}>HOME</Text>
@@ -75,9 +74,13 @@ const MenuModal = ({categories,setCategory,setShowMenu,showMenu}:MenuModalProps)
               key={cat.value} 
               style={styles.menuItem}
               onPress={() => {
-                setCategory(cat.value);
                 setShowMenu(false);
+              
+                setTimeout(() => {
+                  setCategory(cat.value);
+                }, 0);
               }}
+              
             >
               <Text style={styles.menuCategoryText}>{cat.label}</Text>
             </TouchableOpacity>
