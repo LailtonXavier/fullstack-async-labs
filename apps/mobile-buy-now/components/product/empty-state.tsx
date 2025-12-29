@@ -10,13 +10,13 @@ const EmptyState = ({handleResetFilters}: EmptyStateProps) => {
         <View style={styles.emptyIconContainer}>
           <Ionicons name="search-outline" size={64} color="#666" />
         </View>
-        <Text style={styles.emptyStateTitle}>No products found</Text>
+        <Text style={styles.emptyStateTitle}>Produtos não encontrado</Text>
         <Text style={styles.emptyStateText}>
-          Try adjusting your filters or search for other categories
+          Tente ajustar o filtro ou pesquisar por outras categorias
         </Text>
         <TouchableOpacity style={styles.emptyButton} onPress={handleResetFilters}>
           <Ionicons name="refresh" size={20} color="#fff" />
-          <Text style={styles.emptyButtonText}>Clear Filters</Text>
+          <Text style={styles.emptyButtonText}>Limpar filtros</Text>
         </TouchableOpacity>
       </View>
   )

@@ -1,17 +1,18 @@
 import { create } from 'zustand';
 import { ProductProps } from '../domain/entities/product';
+import { ProductStatus } from '../domain/types/product-status.type';
 
 type ProductFiltersState = {
   productSelected: ProductProps | null;
   page: number;
   limit: number;
-  status?: string;
+  status?: ProductStatus;
   category?: string;
   price?: string;
 
   setProductSelected: (product: ProductProps) => void;
   setCategory: (category?: string) => void;
-  setStatus: (status?: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED') => void;
+  setStatus: (status?: ProductStatus) => void;
   setPrice: (price?: string) => void;
   setPage: (page: number) => void;
   resetFilters: () => void;

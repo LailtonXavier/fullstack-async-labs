@@ -2,6 +2,7 @@ import { ChatHeader } from '@/components/chat/chat-header';
 import { Message } from '@/components/chat/ChatProps';
 import { InputChat } from '@/components/chat/input-chat';
 import { RenderMessage } from '@/components/chat/render-message';
+import { TypingIndicator } from '@/components/chat/typing-indicator';
 import { useEffect, useRef, useState } from 'react';
 import { FlatList, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -71,6 +72,7 @@ export default function ChatScreen() {
           contentContainerStyle={styles.list}
           showsVerticalScrollIndicator={false}
         />
+        {isLoading && <TypingIndicator />}
         <InputChat
           value={newMessage}
           onMessageChange={setNewMessage}
@@ -85,7 +87,7 @@ export default function ChatScreen() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: '#0b3aa760',
+    backgroundColor: '#020617',
   },
   container: {
     flex: 1,

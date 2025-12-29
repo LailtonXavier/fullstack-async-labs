@@ -1,158 +1,189 @@
+import { ProductStatus } from '@/app/core/domain/types/product-status.type';
 import { Ionicons } from '@expo/vector-icons';
-import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import {
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 interface FiltersModalProps {
-  showFilters: boolean
-  setShowFilters: (value: React.SetStateAction<boolean>) => void
-  categories: ({
-      label: string;
-      value: undefined;
-      icon: string;
-  } | {
-      label: string;
-      value: string;
-      icon: string;
-  })[]
-  category: string | undefined
-  setCategory: (category?: string) => void
-  status: string | undefined
-  setStatus: (status?: "ACTIVE" | "INACTIVE" | "ARCHIVED") => void
-  localPrice: string
-  setLocalPrice: React.Dispatch<React.SetStateAction<string>>
-  handleApplyPrice: () => void
-  handleResetFilters: () => void
+  showFilters: boolean;
+  setShowFilters: (value: boolean) => void;
+
+  categories: {
+    label: string;
+    value?: string;
+    icon: string;
+  }[];
+
+  category?: string;
+  status?: ProductStatus;
+  price?: string;
+
+  setCategory: (category?: string) => void;
+  setStatus: (status?: ProductStatus) => void;
+  setPrice: (price?: string) => void;
+
+  resetFilters: () => void;
 }
 
 export const statuses = [
-  { label: 'Todos', value: undefined, icon: 'checkmark-circle' },
-  { label: 'Ativo', value: 'ACTIVE', icon: 'checkmark-circle' },
-  { label: 'Inativo', value: 'INACTIVE', icon: 'close-circle' },
-  { label: 'Arquivado', value: 'ARCHIVED', icon: 'archive' },
+  { label: 'Ativo', value: 'ACTIVE' },
+  { label: 'Inativo', value: 'INACTIVE' },
+  { label: 'Arquivado', value: 'ARCHIVED' },
 ];
 
-const FiltersModal = ({categories,category,handleApplyPrice,localPrice,setCategory,setLocalPrice,setShowFilters,setStatus,showFilters,status, handleResetFilters}: FiltersModalProps) => {
-  
+const FiltersModal = ({
+  showFilters,
+  setShowFilters,
+  categories,
+  category,
+  setCategory,
+  status,
+  setStatus,
+  price,
+  setPrice,
+  resetFilters,
+}: FiltersModalProps) => {
+  const [tempCategory, setTempCategory] = useState(category);
+  const [tempStatus, setTempStatus] = useState(status);
+  const [tempPrice, setTempPrice] = useState(price ?? '');
+
+  useEffect(() => {
+    if (showFilters) {
+      setTempCategory(category);
+      setTempStatus(status);
+      setTempPrice(price ?? '');
+    }
+  }, [showFilters]);
+
+  const handleApplyFilters = () => {
+    setCategory(tempCategory);
+    setStatus(tempStatus);
+    setPrice(tempPrice || undefined);
+
+    setShowFilters(false);
+  };
+
+  const handleClear = () => {
+    setTempCategory(undefined);
+    setTempStatus(undefined);
+    setTempPrice('');
+
+    resetFilters();
+    setShowFilters(false);
+  };
+
   return (
-  <Modal
-    visible={showFilters}
-    animationType="slide"
-    transparent={true}
-    onRequestClose={() => setShowFilters(false)}
-  >
-    <View style={styles.modalOverlay}>
-      <View style={styles.modalContent}>
-        {/* Header do Modal */}
-        <View style={styles.modalHeader}>
-          <Text style={styles.modalTitle}>Filtros</Text>
-          <TouchableOpacity onPress={() => setShowFilters(false)}>
-            <Ionicons name="close" size={28} color="#1a1a1a" />
-          </TouchableOpacity>
-        </View>
+    <Modal
+      visible={showFilters}
+      animationType="slide"
+      transparent
+      onRequestClose={() => setShowFilters(false)}
+    >
+      <View style={styles.modalOverlay}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
 
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.filterSection}>
-            <View style={styles.filterHeader}>
-              <Ionicons name="grid" size={20} color="#000" />
-              <Text style={styles.filterLabel}>Category</Text>
-            </View>
-            <View style={styles.filterOptions}>
-              {categories.map((cat) => (
-                <TouchableOpacity
-                  key={cat.label}
-                  style={[
-                    styles.filterChip,
-                    category === cat.value && styles.filterChipActive,
-                  ]}
-                  onPress={() => setCategory(cat.value)}
-                >
-                  <Text
-                    style={[
-                      styles.filterChipText,
-                      category === cat.value && styles.filterChipTextActive,
-                    ]}
-                  >
-                    {cat.label}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+        <View style={styles.modalContent}>
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>Filtros</Text>
+            <TouchableOpacity onPress={() => setShowFilters(false)}>
+              <Ionicons name="close" size={28} color="#000" />
+            </TouchableOpacity>
           </View>
 
-          {/* Filtro de Status */}
-          <View style={styles.filterSection}>
-            <View style={styles.filterHeader}>
-              <Ionicons name="checkmark-circle" size={20} color="#000" />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.filterSection}>
+              <Text style={styles.filterLabel}>Categoria</Text>
+              <View style={styles.filterOptions}>
+                {categories.map(cat => (
+                  <TouchableOpacity
+                    key={cat.label}
+                    style={[
+                      styles.filterChip,
+                      tempCategory === cat.value && styles.filterChipActive,
+                    ]}
+                    onPress={() => setTempCategory(cat.value)}
+                  >
+                    <Text
+                      style={[
+                        styles.filterChipText,
+                        tempCategory === cat.value &&
+                          styles.filterChipTextActive,
+                      ]}
+                    >
+                      {cat.label}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+
+            <View style={styles.filterSection}>
               <Text style={styles.filterLabel}>Status</Text>
-            </View>
-            <View style={styles.filterOptions}>
-              {statuses.map((stat) => (
-                <TouchableOpacity
-                  key={stat.label}
-                  style={[
-                    styles.filterChip,
-                    status === stat.value && styles.filterChipActive,
-                  ]}
-                  onPress={() => setStatus(stat.value as any)}
-                >
-                  <Text
+              <View style={styles.filterOptions}>
+                {statuses.map(stat => (
+                  <TouchableOpacity
+                    key={stat.label}
                     style={[
-                      styles.filterChipText,
-                      status === stat.value && styles.filterChipTextActive,
+                      styles.filterChip,
+                      tempStatus === stat.value && styles.filterChipActive,
                     ]}
+                    onPress={() =>
+                      setTempStatus(stat.value as any)
+                    }
                   >
-                    {stat.label}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+                    <Text
+                      style={[
+                        styles.filterChipText,
+                        tempStatus === stat.value &&
+                          styles.filterChipTextActive,
+                      ]}
+                    >
+                      {stat.label}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
             </View>
-          </View>
 
-          {/* Filtro de Preço Mínimo */}
-          <View style={styles.filterSection}>
-            <View style={styles.filterHeader}>
-              <Ionicons name="cash" size={20} color="#000" />
-              <Text style={styles.filterLabel}>Minimum Price</Text>
-            </View>
-            <View style={styles.priceInputContainer}>
+            <View style={styles.filterSection}>
+              <Text style={styles.filterLabel}>Preço mínimo</Text>
               <TextInput
                 style={styles.priceInput}
                 placeholder="Ex: 100.00"
-                value={localPrice}
-                onChangeText={setLocalPrice}
+                value={tempPrice}
+                onChangeText={setTempPrice}
                 keyboardType="numeric"
-                placeholderTextColor="#999"
               />
-              <TouchableOpacity
-                style={styles.applyButton}
-                onPress={handleApplyPrice}
-              >
-                <Ionicons name="checkmark" size={20} color="#fff" />
-              </TouchableOpacity>
             </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
 
-        {/* Botões de Ação */}
-        <View style={styles.modalFooter}>
-          <TouchableOpacity
-            style={styles.clearButton}
-            onPress={handleResetFilters}
-          >
-            <Ionicons name="refresh" size={20} color="#000" />
-            <Text style={styles.clearButtonText}>Clear</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.applyFiltersButton}
-            onPress={() => setShowFilters(false)}
-          >
-            <Text style={styles.applyFiltersText}>Apply Filters</Text>
-            <Ionicons name="checkmark-circle" size={20} color="#fff" />
-          </TouchableOpacity>
+          <View style={styles.modalFooter}>
+            <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
+              <Text style={styles.clearButtonText}>Limpar</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.applyFiltersButton}
+              onPress={handleApplyFilters}
+            >
+              <Text style={styles.applyFiltersText}>Aplicar filtros</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+        </KeyboardAvoidingView>
       </View>
-    </View>
-  </Modal>
-)};
+    </Modal>
+  );
+};
 
 const styles = StyleSheet.create({
 
@@ -166,7 +197,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingTop: 20,
-    maxHeight: '85%',
   },
   modalHeader: {
     flexDirection: 'row',
@@ -198,6 +228,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#000',
+    marginBottom: 8,
   },
   filterOptions: {
     flexDirection: 'row',
